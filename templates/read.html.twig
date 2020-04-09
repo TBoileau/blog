@@ -1,0 +1,17 @@
+{% extends 'base.html.twig' %}
+
+{% block body %}
+    <h1>{{post.title}}</h1>
+    <small>{{ post.publishedAt|date("d/m/Y") }}</small>
+    <p>{{ post.content }}</p>
+    {{ form_start(form) }}
+        {{ form_row(form.author) }}
+        {{ form_row(form.content) }}
+        <button type="submit">Envoyer</button>
+    {{ form_end(form) }}
+    <ul>
+        {% for comment in post.comments %}
+            <li>{{ comment.author }} : {{ comment.content }}</li>
+        {% endfor %}
+    </ul>
+{% endblock %}

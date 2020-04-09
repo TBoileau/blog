@@ -1,0 +1,12 @@
+{% extends 'base.html.twig' %}
+
+{% block body %}
+    <h1>Blog !</h1>
+    {% for post in posts %}
+        <h2>{{ post.title }}</h2>
+        <small>{{ post.publishedAt|date("d/m/Y") }}</small>
+        <p>{{ post.content }}</p>
+        <small>{{ post.comments|length }} commentaire(s)</small>
+        <a href="{{ path("blog_read", { id: post.id }) }}">Lire la suite</a>
+    {% endfor %}
+{% endblock %}
