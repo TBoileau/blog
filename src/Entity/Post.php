@@ -6,6 +6,7 @@ use DateTimeImmutable;
 use Doctrine\Common\Collections\ArrayCollection;
 use Doctrine\Common\Collections\Collection;
 use Doctrine\ORM\Mapping as ORM;
+use Symfony\Component\Validator\Constraints as Assert;
 
 /**
  * @ORM\Entity(repositoryClass="App\Repository\PostRepository")
@@ -23,6 +24,7 @@ class Post
     /**
      * @var string|null
      * @ORM\Column
+     * @Assert\NotBlank
      */
     private ?string $title = null;
 
@@ -34,7 +36,15 @@ class Post
 
     /**
      * @var string|null
+     * @ORM\Column
+     */
+    private ?string $image = null;
+
+    /**
+     * @var string|null
      * @ORM\Column(type="text")
+     * @Assert\NotBlank
+     * @Assert\Length(min=10)
      */
     private ?string $content = null;
 
@@ -63,9 +73,9 @@ class Post
     }
 
     /**
-     * @return string
+     * @return string|null
      */
-    public function getTitle(): string
+    public function getTitle(): ?string
     {
         return $this->title;
     }
@@ -95,9 +105,25 @@ class Post
     }
 
     /**
-     * @return string
+     * @return string|null
      */
-    public function getContent(): string
+    public function getImage(): ?string
+    {
+        return $this->image;
+    }
+
+    /**
+     * @param string|null $image
+     */
+    public function setImage(?string $image): void
+    {
+        $this->image = $image;
+    }
+
+    /**
+     * @return string|null
+     */
+    public function getContent(): ?string
     {
         return $this->content;
     }
