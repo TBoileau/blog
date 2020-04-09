@@ -2,6 +2,7 @@
 
 namespace App\Entity;
 
+use DateTimeImmutable;
 use Doctrine\Common\Collections\ArrayCollection;
 use Doctrine\Common\Collections\Collection;
 use Doctrine\ORM\Mapping as ORM;
@@ -17,31 +18,31 @@ class Post
      * @ORM\GeneratedValue()
      * @ORM\Column(type="integer")
      */
-    private $id;
+    private ?int $id;
 
     /**
-     * @var string
+     * @var string|null
      * @ORM\Column
      */
-    private $title;
+    private ?string $title = null;
 
     /**
-     * @var \DateTimeImmutable
+     * @var DateTimeImmutable
      * @ORM\Column(type="datetime_immutable")
      */
-    private $publishedAt;
+    private DateTimeImmutable $publishedAt;
 
     /**
-     * @var string
+     * @var string|null
      * @ORM\Column(type="text")
      */
-    private $content;
+    private ?string $content = null;
 
     /**
      * @var Collection
      * @ORM\OneToMany(targetEntity="Comment", mappedBy="post")
      */
-    private $comments;
+    private Collection $comments;
 
     /**
      * Post constructor.
@@ -49,7 +50,7 @@ class Post
      */
     public function __construct()
     {
-        $this->publishedAt = new \DateTimeImmutable();
+        $this->publishedAt = new DateTimeImmutable();
         $this->comments = new ArrayCollection();
     }
 
@@ -78,17 +79,17 @@ class Post
     }
 
     /**
-     * @return \DateTimeImmutable
+     * @return DateTimeImmutable
      */
-    public function getPublishedAt(): \DateTimeImmutable
+    public function getPublishedAt(): DateTimeImmutable
     {
         return $this->publishedAt;
     }
 
     /**
-     * @param \DateTimeImmutable $publishedAt
+     * @param DateTimeImmutable $publishedAt
      */
-    public function setPublishedAt(\DateTimeImmutable $publishedAt): void
+    public function setPublishedAt(DateTimeImmutable $publishedAt): void
     {
         $this->publishedAt = $publishedAt;
     }
