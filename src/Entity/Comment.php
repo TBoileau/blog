@@ -2,7 +2,9 @@
 
 namespace App\Entity;
 
+use DateTimeImmutable;
 use Doctrine\ORM\Mapping as ORM;
+use Symfony\Component\Validator\Constraints as Assert;
 
 /**
  * @ORM\Entity(repositoryClass="App\Repository\CommentRepository")
@@ -15,31 +17,35 @@ class Comment
      * @ORM\GeneratedValue()
      * @ORM\Column(type="integer")
      */
-    private $id;
+    private ?int $id;
 
     /**
      * @var string
      * @ORM\Column
+     * @Assert\NotBlank
+     * @Assert\Length(min=2)
      */
-    private $author;
+    private ?string $author = null;
 
     /**
      * @var string
      * @ORM\Column(type="text")
+     * @Assert\NotBlank
+     * @Assert\Length(min=5)
      */
-    private $content;
+    private ?string $content = null;
 
     /**
-     * @var \DateTimeImmutable
+     * @var DateTimeImmutable
      * @ORM\Column(type="datetime_immutable")
      */
-    private $postedAt;
+    private DateTimeImmutable $postedAt;
 
     /**
      * @var Post
      * @ORM\ManyToOne(targetEntity="Post", inversedBy="comments")
      */
-    private $post;
+    private Post $post;
 
     /**
      * Comment constructor.
@@ -47,7 +53,7 @@ class Comment
      */
     public function __construct()
     {
-        $this->postedAt = new \DateTimeImmutable();
+        $this->postedAt = new DateTimeImmutable();
     }
 
     /**
@@ -91,17 +97,17 @@ class Comment
     }
 
     /**
-     * @return \DateTimeImmutable
+     * @return DateTimeImmutable
      */
-    public function getPostedAt(): \DateTimeImmutable
+    public function getPostedAt(): DateTimeImmutable
     {
         return $this->postedAt;
     }
 
     /**
-     * @param \DateTimeImmutable $postedAt
+     * @param DateTimeImmutable $postedAt
      */
-    public function setPostedAt(\DateTimeImmutable $postedAt): void
+    public function setPostedAt(DateTimeImmutable $postedAt): void
     {
         $this->postedAt = $postedAt;
     }
