@@ -3,6 +3,7 @@
 {% block body %}
     <h1>{{post.title}}</h1>
     <small>{{ post.publishedAt|date("d/m/Y") }}</small>
+    <img src="{{ asset(post.image) }}" alt="{{ post.title }}">
     <p>{{ post.content }}</p>
     {{ form_start(form) }}
         {{ form_row(form.author) }}
