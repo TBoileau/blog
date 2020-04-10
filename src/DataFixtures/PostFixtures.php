@@ -5,13 +5,14 @@ namespace App\DataFixtures;
 use App\Entity\Comment;
 use App\Entity\Post;
 use Doctrine\Bundle\FixturesBundle\Fixture;
+use Doctrine\Common\DataFixtures\DependentFixtureInterface;
 use Doctrine\Persistence\ObjectManager;
 
 /**
  * Class PostFixtures
  * @package App\DataFixtures
  */
-class PostFixtures extends Fixture
+class PostFixtures extends Fixture implements DependentFixtureInterface
 {
     /**
      * @param ObjectManager $manager
@@ -23,7 +24,8 @@ class PostFixtures extends Fixture
             $post = new Post();
             $post->setTitle("Article N°" . $i);
             $post->setContent("Contenu N°" . $i);
-            $post->setImage("http://via.placeholder.com/400x300");
+            $post->setUser($this->getReference(sprintf("user-%d", ($i % 10) + 1)));
+            $post->setImage(" https://picsum.photos/400/300");
             $manager->persist($post);
 
             for ($j = 1; $j <= rand(5, 15); $j++) {
@@ -36,5 +38,13 @@ class PostFixtures extends Fixture
         }
 
         $manager->flush();
+    }
+
+    /**
+     * @inheritDoc
+     */
+    public function getDependencies()
+    {
+        return [UserFixtures::class];
     }
 }

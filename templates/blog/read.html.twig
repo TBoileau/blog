@@ -6,13 +6,15 @@
     <img src="{{ asset(post.image) }}" alt="{{ post.title }}">
     <p>{{ post.content }}</p>
     {{ form_start(form) }}
-        {{ form_row(form.author) }}
+        {% if form.author is defined %}
+            {{ form_row(form.author) }}
+        {% endif %}
         {{ form_row(form.content) }}
         <button type="submit">Envoyer</button>
     {{ form_end(form) }}
     <ul>
         {% for comment in post.comments %}
-            <li>{{ comment.author }} : {{ comment.content }}</li>
+            <li>{{ comment.user is not null ? comment.user.pseudo : comment.author }} : {{ comment.content }}</li>
         {% endfor %}
     </ul>
 {% endblock %}

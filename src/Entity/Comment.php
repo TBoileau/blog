@@ -20,17 +20,17 @@ class Comment
     private ?int $id;
 
     /**
-     * @var string
-     * @ORM\Column
-     * @Assert\NotBlank
-     * @Assert\Length(min=2)
+     * @var string|null
+     * @ORM\Column(nullable=true)
+     * @Assert\NotBlank(groups={"anonymous"})
+     * @Assert\Length(min=2, groups={"anonymous"})
      */
     private ?string $author = null;
 
     /**
      * @var string
      * @ORM\Column(type="text")
-     * @Assert\NotBlank
+     * @Assert\NotBlank()
      * @Assert\Length(min=5)
      */
     private ?string $content = null;
@@ -46,6 +46,12 @@ class Comment
      * @ORM\ManyToOne(targetEntity="Post", inversedBy="comments")
      */
     private Post $post;
+
+    /**
+     * @var null|User
+     * @ORM\ManyToOne(targetEntity="User")
+     */
+    private ?User $user = null;
 
     /**
      * Comment constructor.
@@ -73,11 +79,27 @@ class Comment
     }
 
     /**
-     * @param string $author
+     * @param string|null $author
      */
-    public function setAuthor(string $author): void
+    public function setAuthor(?string $author): void
     {
         $this->author = $author;
+    }
+
+    /**
+     * @return User|null
+     */
+    public function getUser(): ?User
+    {
+        return $this->user;
+    }
+
+    /**
+     * @param User|null $user
+     */
+    public function setUser(?User $user): void
+    {
+        $this->user = $user;
     }
 
     /**

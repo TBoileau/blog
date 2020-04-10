@@ -1,0 +1,14 @@
+{% extends 'base.html.twig' %}
+
+{% block body %}
+    <div class="row">
+        <div class="col">
+            {{ form_start(form) }}
+                {{ form_errors(form) }}
+                {{ form_row(form.username) }}
+                {{ form_row(form.password) }}
+                <button type="submit">Se connecter</button>
+            {{ form_end(form) }}
+        </div>
+    </div>
+{% endblock %}
