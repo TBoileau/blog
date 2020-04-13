@@ -5,7 +5,45 @@
         <div class="col-12 mb-4">
             <h1>Blog</h1>
         </div>
-        {% for post in posts %}
+        <div class="col-12">
+            <form action="{{ representation|path(1) }}">
+                <div class="row">
+                    <div class="col">
+                        <div class="form-group">
+                            <label>Trier par</label>
+                            <select name="field" class="form-control">
+                                <option {{ representation.field == "p.publishedAt" ? "selected" : "" }} value="p.publishedAt">Date de publication</option>
+                                <option {{ representation.field == "p.title" ? "selected" : "" }} value="p.title">Titre</option>
+                            </select>
+                        </div>
+                    </div>
+                    <div class="col">
+                        <div class="form-group">
+                            <label>Sens de tri</label>
+                            <select name="order" class="form-control">
+                                <option {{ representation.order == "asc" ? "selected" : "" }} value="asc">Croissant</option>
+                                <option {{ representation.order == "desc" ? "selected" : "" }} value="desc">Décroissant</option>
+                            </select>
+                        </div>
+                    </div>
+                    <div class="col">
+                        <div class="form-group">
+                            <label>Nb. article/page</label>
+                            <select name="limit" class="form-control">
+                                <option {{ representation.limit == 10 ? "selected" : "" }} value="10">10</option>
+                                <option {{ representation.limit == 25 ? "selected" : "" }} value="25">25</option>
+                                <option {{ representation.limit == 50 ? "selected" : "" }} value="50">50</option>
+                            </select>
+                        </div>
+                    </div>
+                    <div class="col">
+                        <button class="btn btn-primary">Trier</button>
+                    </div>
+                </div>
+
+            </form>
+        </div>
+        {% for post in representation %}
             <div class="col-4 mb-3">
                 <div class="card">
                     <div class="card-header">{{ post.title }}</div>
@@ -23,25 +61,25 @@
                 </div>
             </div>
         {% endfor %}
-        <div class="col-12 mt-4">
 
+        <div class="col-12 mt-4 d-flex justify-content-between">
+            <span>Affiche les articles de {{ representation.firstResult }} à {{ representation.lastResult }} sur {{ representation.count }}</span>
             <nav aria-label="Page navigation example">
                 <ul class="pagination">
-
-                    {% if page > 1 %}
-                        <li class="page-item"><a class="page-link" href="{{ path("index", { page: 1 }) }}">Première page</a></li>
+                    {% if representation.page > 1 %}
+                        <li class="page-item"><a class="page-link" href="{{ representation|path(1) }}">Première page</a></li>
                     {% endif %}
-                    {% if page > 1 %}
-                        <li class="page-item"><a class="page-link" href="{{ path("index", { page: page - 1 }) }}">Précédent</a></li>
+                    {% if representation.page > 1 %}
+                        <li class="page-item"><a class="page-link" href="{{ representation|path(representation.page - 1) }}">Précédent</a></li>
                     {% endif %}
-                    {% for p in range %}
-                        <li class="page-item {{ page == p  ? "active" : "" }}"><a class="page-link" href="{{ path("index", { page: p }) }}">{{ p }}</a></li>
+                    {% for p in representation.range %}
+                        <li class="page-item {{ representation.page == p  ? "active" : "" }}"><a class="page-link" href="{{ representation|path(p) }}">{{ p }}</a></li>
                     {% endfor %}
-                    {% if page < pages %}
-                        <li class="page-item"><a class="page-link" href="{{ path("index", { page: page + 1 }) }}">Suivant</a></li>
+                    {% if representation.page < representation.pages %}
+                        <li class="page-item"><a class="page-link" href="{{ representation|path(representation.page + 1) }}">Suivant</a></li>
                     {% endif %}
-                    {% if page < pages %}
-                        <li class="page-item"><a class="page-link" href="{{ path("index", { page: pages }) }}">Première page</a></li>
+                    {% if representation.page < representation.pages %}
+                        <li class="page-item"><a class="page-link" href="{{ representation|path(representation.pages) }}">Dernière page</a></li>
                     {% endif %}
                 </ul>
             </nav>

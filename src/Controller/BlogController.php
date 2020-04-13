@@ -6,6 +6,13 @@ use App\Entity\Comment;
 use App\Entity\Post;
 use App\Form\CommentType;
 use App\Form\PostType;
+use App\Paginator\CommentPaginator;
+use App\Paginator\PostPaginator;
+use App\Repository\PostRepository;
+use App\Representation\Representation;
+use App\Representation\RepresentationBuilderInterface;
+use App\Representation\RepresentationFactoryInterface;
+use App\Representation\RepresentationInterface;
 use App\Security\Voter\PostVoter;
 use App\Uploader\UploaderInterface;
 use Doctrine\ORM\Tools\Pagination\Paginator;
@@ -24,32 +31,15 @@ class BlogController extends AbstractController
     /**
      * @Route("/", name="index")
      * @param Request $request
+     * @param RepresentationFactoryInterface $representationFactory
      * @return Response
      */
-    public function index(Request $request): Response
+    public function index(Request $request, RepresentationFactoryInterface $representationFactory): Response
     {
-        $limit = $request->get("limit", 10);
-        $page = $request->get("page", 1);
-
-        /** @var Paginator $posts */
-        $posts = $this->getDoctrine()->getRepository(Post::class)->getPaginatedPosts(
-            $page,
-            $limit
-        );
-
-        $pages = ceil($posts->count() / $limit);
-
-        $range = range(
-            max($page - 3, 1),
-            min($page + 3, $pages)
-        );
+        $representation = $representationFactory->create(PostPaginator::class)->handleRequest($request);
 
         return $this->render("blog/index.html.twig", [
-            "posts" => $posts,
-            "pages" => $pages,
-            "page" => $page,
-            "limit" => $limit,
-            "range" => $range
+            "representation" => $representation->paginate()
         ]);
     }
 
@@ -57,11 +47,14 @@ class BlogController extends AbstractController
      * @Route("/article-{id}", name="blog_read")
      * @param Post $post
      * @param Request $request
+     * @param RepresentationFactoryInterface $representationFactory
      * @return Response
      * @throws \Exception
      */
-    public function read(Post $post, Request $request): Response
+    public function read(Post $post, Request $request, RepresentationFactoryInterface $representationFactory): Response
     {
+        $representation = $representationFactory->create(CommentPaginator::class)->handleRequest($request);
+
         $comment = new Comment();
         $comment->setPost($post);
 
@@ -81,7 +74,13 @@ class BlogController extends AbstractController
 
         return $this->render("blog/read.html.twig", [
             "post" => $post,
-            "form" => $form->createView()
+            "form" => $form->createView(),
+            "representation" => $representation->paginate([
+                "post" => $post,
+                "route_params" => [
+                    "id" => $post->getId()
+                ]
+            ])
         ]);
     }
 

@@ -12,9 +12,33 @@
         {{ form_row(form.content) }}
         <button type="submit">Envoyer</button>
     {{ form_end(form) }}
+
     <ul>
-        {% for comment in post.comments %}
+        {% for comment in representation %}
             <li>{{ comment.user is not null ? comment.user.pseudo : comment.author }} : {{ comment.content }}</li>
         {% endfor %}
     </ul>
+
+    <div class="col-12 mt-4 d-flex justify-content-between">
+        <span>Affiche les articles de {{ representation.firstResult }} à {{ representation.lastResult }} sur {{ representation.count }}</span>
+        <nav aria-label="Page navigation example">
+            <ul class="pagination">
+                {% if representation.page > 1 %}
+                    <li class="page-item"><a class="page-link" href="{{ representation|path(1) }}">Première page</a></li>
+                {% endif %}
+                {% if representation.page > 1 %}
+                    <li class="page-item"><a class="page-link" href="{{ representation|path(representation.page - 1) }}">Précédent</a></li>
+                {% endif %}
+                {% for p in representation.range %}
+                    <li class="page-item {{ representation.page == p  ? "active" : "" }}"><a class="page-link" href="{{ representation|path(p) }}">{{ p }}</a></li>
+                {% endfor %}
+                {% if representation.page < representation.pages %}
+                    <li class="page-item"><a class="page-link" href="{{ representation|path(representation.page + 1) }}">Suivant</a></li>
+                {% endif %}
+                {% if representation.page < representation.pages %}
+                    <li class="page-item"><a class="page-link" href="{{ representation|path(representation.pages) }}">Dernière page</a></li>
+                {% endif %}
+            </ul>
+        </nav>
+    </div>
 {% endblock %}
