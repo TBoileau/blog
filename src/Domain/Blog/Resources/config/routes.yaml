@@ -1,0 +1,15 @@
+index:
+  path: /
+  controller: App\Domain\Blog\Controller\Listing
+
+blog_read:
+  path: /{id}/lire-article
+  controller: App\Domain\Blog\Controller\Read
+
+blog_create:
+  path: /publier-article
+  controller: App\Domain\Blog\Controller\Create
+
+blog_update:
+  path: /{id}/modifier-article
+  controller: App\Domain\Blog\Controller\Update

@@ -1,0 +1,7 @@
+security_login:
+  path: /se-connecter
+  controller: App\Domain\Security\Controller\Login
+
+security_logout:
+  path: /se-deconnecter
+  controller: App\Domain\Security\Controller\Logout

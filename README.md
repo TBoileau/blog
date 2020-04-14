@@ -38,3 +38,16 @@ Episode 3
 * Ajout de fixtures
 * Modification des entités `Post` et `Comment` (ajout de la relation avec l'user)
 
+Episode 4
+---------
+
+* Refactoring de la pagination
+
+Episode 5
+---------
+
+* Implémentation des `Handler`
+* Implémentation des `Responder` et `Presenter`
+* Implémentation des `DataTransferObject`
+* Implémentation des `EventSubscriber`
+* Découpage de l'application en `Application`, `Infrastructure` et `Domain`
