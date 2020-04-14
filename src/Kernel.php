@@ -2,8 +2,8 @@
 
 namespace App;
 
-use App\DependencyInjection\Compiler\RepresentationPass;
-use App\DependencyInjection\RepresentationExtension;
+use App\Infrastructure\DependencyInjection\Compiler\RepresentationPass;
+use App\Infrastructure\DependencyInjection\RepresentationExtension;
 use Symfony\Bundle\FrameworkBundle\Kernel\MicroKernelTrait;
 use Symfony\Component\Config\Loader\LoaderInterface;
 use Symfony\Component\Config\Resource\FileResource;
@@ -43,6 +43,11 @@ class Kernel extends BaseKernel
         $loader->load($confDir.'/{packages}/'.$this->environment.'/*'.self::CONFIG_EXTS, 'glob');
         $loader->load($confDir.'/{services}'.self::CONFIG_EXTS, 'glob');
         $loader->load($confDir.'/{services}_'.$this->environment.self::CONFIG_EXTS, 'glob');
+
+        $domainDir = $this->getProjectDir().'/src/Domain';
+
+        $loader->load($domainDir.'/**/Resources/config/{services}'.self::CONFIG_EXTS, 'glob');
+
     }
 
     protected function configureRoutes(RouteCollectionBuilder $routes): void
@@ -52,6 +57,10 @@ class Kernel extends BaseKernel
         $routes->import($confDir.'/{routes}/'.$this->environment.'/*'.self::CONFIG_EXTS, '/', 'glob');
         $routes->import($confDir.'/{routes}/*'.self::CONFIG_EXTS, '/', 'glob');
         $routes->import($confDir.'/{routes}'.self::CONFIG_EXTS, '/', 'glob');
+
+        $domainDir = $this->getProjectDir().'/src/Domain';
+
+        $routes->import($domainDir.'/**/Resources/config/{routes}'.self::CONFIG_EXTS, "/", 'glob');
     }
 
     protected function build(ContainerBuilder $container)

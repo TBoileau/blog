@@ -1,0 +1,3 @@
+registration:
+  path: /s-inscrire
+  controller: App\Domain\User\Controller\Registration
