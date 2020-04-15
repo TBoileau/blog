@@ -103,7 +103,7 @@ class Representation implements RepresentationInterface
         $this->page = $this->request->get("page", 1);
         $this->limit = $this->request->get("limit", 10);
         $this->field = $this->request->get("field", $this->field);
-        $this->order = $this->request->get("order", "asc");
+        $this->order = $this->request->get("order", $this->order);
 
         $this->countQueryBuilder = clone $this->queryBuilder;
 

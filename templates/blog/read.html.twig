@@ -15,7 +15,7 @@
 
     <ul>
         {% for comment in representation %}
-            <li>{{ comment.user is not null ? comment.user.pseudo : comment.author }} : {{ comment.content }}</li>
+            <li>{{ comment.user is not null ? comment.user.pseudo : comment.author }} - {{ comment.postedAt|date("d/m/Y H:i:s") }} : {{ comment.content }}</li>
         {% endfor %}
     </ul>
 
