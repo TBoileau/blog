@@ -103,7 +103,7 @@ class Representation implements RepresentationInterface
         $this->page = $this->request->get("page", 1);
         $this->limit = $this->request->get("limit", 10);
         $this->field = $this->request->get("field", $this->field);
-        $this->order = $this->request->get("order", "asc");
+        $this->order = $this->request->get("order", $this->order);
 
         $this->countQueryBuilder = clone $this->queryBuilder;
 
@@ -112,6 +112,8 @@ class Representation implements RepresentationInterface
             ->setMaxResults($this->limit)
             ->orderBy($this->field, $this->order)
             ->getQuery()
+            ->useQueryCache(true)
+            ->enableResultCache(0)
             ->getResult()
         ;
 
@@ -156,8 +158,12 @@ class Representation implements RepresentationInterface
     {
         if ($this->count === null) {
             $this->count = $this->countQueryBuilder
+                ->resetDQLPart("select")
+                ->resetDQLPart("groupBy")
                 ->select(sprintf("COUNT(DISTINCT %s.id)", $this->countQueryBuilder->getRootAliases()[0]))
                 ->getQuery()
+                ->useQueryCache(true)
+                ->enableResultCache(0)
                 ->getSingleScalarResult()
             ;
         }

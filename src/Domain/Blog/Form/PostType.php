@@ -31,13 +31,7 @@ class PostType extends AbstractType
                 "label" => "Article :"
             ])
             ->add("image", FileType::class, [
-                "required" => false,
-                "constraints" => [
-                    new Image(),
-                    new NotNull([
-                        "groups" => "create"
-                    ])
-                ]
+                "required" => false
             ])
         ;
     }

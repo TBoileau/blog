@@ -8,6 +8,18 @@ Pré-requis :
 * PHP 7.4
 * MySQL
 
+Installation
+------------
+
+Dans un premier temps, cloner le repository : `git clone https://github.com/TBoileau/blog`
+
+Pensez à créer votre fichier pour votre environnement de développement `.env.dev.local` :
+```dotenv
+DATABASE_URL=mysql://USER:PASSWORD@127.0.0.1:3306/DBNAME
+```
+
+Puis executer le script `composer prepare` pour créer la base de données et intérgrer les fixtures.
+
 Episode 1
 ---------
 
@@ -51,3 +63,8 @@ Episode 5
 * Implémentation des `DataTransferObject`
 * Implémentation des `EventSubscriber`
 * Découpage de l'application en `Application`, `Infrastructure` et `Domain`
+
+Episode 6
+---------
+
+* Implémentation des tests fonctionnels

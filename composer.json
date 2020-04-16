@@ -30,6 +30,7 @@
         "symfony/yaml": "5.0.*"
     },
     "require-dev": {
+        "dama/doctrine-test-bundle": "^4.0",
         "doctrine/doctrine-fixtures-bundle": "^3.3",
         "symfony/debug-pack": "*",
         "symfony/maker-bundle": "^1.0",
@@ -62,6 +63,12 @@
         "symfony/polyfill-php56": "*"
     },
     "scripts": {
+        "prepare-test": [
+            "php bin/console doctrine:database:drop --if-exists --force --env=test",
+            "php bin/console doctrine:database:create --env=test",
+            "php bin/console doctrine:schema:update --force --env=test",
+            "php bin/console doctrine:fixtures:load -n --env=test"
+        ],
         "prepare": [
             "php bin/console doctrine:database:drop --if-exists --force",
             "php bin/console doctrine:database:create",
