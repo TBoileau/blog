@@ -49,8 +49,8 @@
                     <div class="card-header">{{ post.title }}</div>
                     <img class="card-img-top" src="{{ asset(post.image) }}" alt="{{ post.title }}">
                     <div class="card-body d-flex justify-content-between flex-column">
-                        <small class="text-muted">Publié le {{ post.publishedAt|date("d/m/Y") }} par {{ post.user.pseudo }}</small>
-                        <small class="text-muted">{{ post.comments|length }} commentaire(s)</small>
+                        <small class="text-muted">Publié le {{ post.publishedAt|date("d/m/Y") }} par {{ post.pseudo }}</small>
+                        <small class="text-muted">{{ post.countComments }} commentaire(s)</small>
                     </div>
                     <div class="card-footer d-flex justify-content-between">
                         <a href="{{ path("blog_read", { id: post.id }) }}">Lire la suite</a>

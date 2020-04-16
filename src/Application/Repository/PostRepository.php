@@ -26,6 +26,19 @@ class PostRepository extends ServiceEntityRepository
      */
     public function getPaginatedPosts(): QueryBuilder
     {
-        return $this->createQueryBuilder("p");
+        return $this->createQueryBuilder("p")
+            ->select([
+                "p.id",
+                "p.title",
+                "p.publishedAt",
+                "p.content",
+                "p.image",
+                "COUNT(c.id) as countComments",
+                "u.pseudo as pseudo"
+            ])
+            ->join("p.user", "u")
+            ->join("p.comments", "c")
+            ->groupBy("p.id")
+            ;
     }
 }

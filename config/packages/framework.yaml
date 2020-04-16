@@ -9,7 +9,12 @@ framework:
         handler_id: null
         cookie_secure: auto
         cookie_samesite: lax
-
+    cache:
+        pools:
+            doctrine.result_cache_pool:
+                adapter: cache.app
+            doctrine.system_cache_pool:
+                adapter: cache.system
     #esi: true
     #fragments: true
     php_errors:
